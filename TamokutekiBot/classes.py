@@ -26,6 +26,8 @@ class TamokutekiClient(TelegramClient):
 
         path = Path(path)
         stem = path.stem
+        if stem == "__init__":
+            return
         spec = importlib.spec_from_file_location(stem, path)
         module = importlib.module_from_spec(spec)
         module.Tamokuteki = self
@@ -35,12 +37,13 @@ class TamokutekiClient(TelegramClient):
 
     def unload_plugin(self, plugin: str) -> None:
         """Unload plugin."""
-
+        if plugin in ["core", "help"]:
+            return False
         try:
             name = self.__plugins__[plugin].__name__
         except KeyError:
             return False
-        for i in range(len(self._event_builders)):
+        for i in reversed(range(len(self._event_builders))):
             ev, cb = self._event_builders[i]
             if cb.__module__ == name:
                 del self._event_builders[i]

@@ -1,7 +1,7 @@
 # Tamokuteki
 A multipurpose userbot written using telethon
 
-## Setps to deploy
+## Steps to deploy
 - `TODO`
 
 ## Credits

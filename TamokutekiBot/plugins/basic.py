@@ -1,9 +1,9 @@
 from telethon import events
 
-@Tamokuteki.on(events.NewMessage(pattern = ".start", outgoing  = True))
+@Tamokuteki.on(events.NewMessage(pattern = ".config", outgoing  = True))
 async def sup(event):
-    await event.edit("Tamokuteki Bot V1")
+    await event.edit("Tamokuteki Bot\nRepo: https://github.com/DragSama/Tamokuteki")
 
 __commands__ = {
-    "start": "Check if bot is up and running."
+    "config": "Get repo."
 }

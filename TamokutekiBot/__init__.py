@@ -22,4 +22,3 @@ Tamokuteki = TamokutekiClient(
     API_ID,
     API_HASH
 )
-print(Tamokuteki)
