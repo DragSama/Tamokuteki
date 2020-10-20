@@ -1,4 +1,5 @@
 from telethon import TelegramClient
+import aiohttp
 
 import logging
 from pathlib import Path
@@ -11,12 +12,11 @@ class TamokutekiClient(TelegramClient):
         """Start client and import plugins."""
         self.__plugins__ = {}
         super().__init__(*args, **kwargs)
-
+        self.aio_session = aiohttp.ClientSession()
         core_plugin =  Path(__file__).parent / "core.py"
         help_plugin = Path(__file__).parent / "help.py"
         self.load_plugin(core_plugin)
         self.load_plugin(help_plugin)
-
         for plugin in Path(__file__).parent.glob(f"plugins/*.py"):
             self.load_plugin(plugin)
         logging.info("Loaded all plugins.")
@@ -31,6 +31,7 @@ class TamokutekiClient(TelegramClient):
         spec = importlib.spec_from_file_location(stem, path)
         module = importlib.module_from_spec(spec)
         module.Tamokuteki = self
+        module.session = self.aio_session
         spec.loader.exec_module(module)
         self.__plugins__[stem] = module
         logging.info(f"Loaded plugin {stem}")

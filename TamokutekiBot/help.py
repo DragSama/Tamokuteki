@@ -20,7 +20,6 @@ async def help(event) -> None:
     for x in commands.keys():
         if x == "description": # Add description at end of message not at random
             continue
-        print(x)
         msg += f"**{x}**: `{commands[x]}`\n"
     description = commands.get("description", False)
     if description:
