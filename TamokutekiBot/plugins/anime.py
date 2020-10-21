@@ -46,7 +46,7 @@ def shorten(description):
 
 url = 'https://graphql.anilist.co'
 
-@Tamokuteki.on(command(pattern = "\.anime", outgoing  = True))
+@Tamokuteki.on(command(pattern = "anime", outgoing  = True))
 async def anime(event):
     search = event.text.split(' ', 1)
     if len(search) == 1:
