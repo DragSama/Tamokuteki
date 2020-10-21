@@ -2,10 +2,22 @@ from telethon import events
 
 from pathlib import Path
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.load ", outgoing  = True))
+@Tamokuteki.on(events.NewMessage(pattern = "\.load", outgoing  = True))
 async def loading(event):
-    path = event.text.split(" ", 1)[1] + ".py"
-    path = Path(__file__).parent / "plugins" /path
+    reply = await event.get_reply_message()
+    if reply:
+        if reply.media and reply.media.document:
+            if reply.media.document.mime_type == "text/x-python":
+                path = await Tamokuteki.download_media(reply)
+            else:
+                await event.edit("Reply to a valid file.")
+                return
+    else:
+        if len((split := event.text.split(" ", 1))) == 1:
+                await event.edit("Reply to a plugin.")
+                return
+        path = split[1] + ".py"
+        path = Path(__file__).parent / "plugins" /path
     Tamokuteki.load_plugin(path)
     await event.edit("Loaded plugin " + event.text.split(" ", 1)[1])
 
