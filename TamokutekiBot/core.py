@@ -19,7 +19,7 @@ async def loading(event):
         path = split[1] + ".py"
         path = Path(__file__).parent / "plugins" /path
     Tamokuteki.load_plugin(path)
-    await event.edit("Loaded plugin " + split[1] if len(split) == 2 else path)
+    await event.edit("Loaded plugin " + path)
 
 @Tamokuteki.on(events.NewMessage(pattern = "\.unload ", outgoing  = True))
 async def unloading(event):
