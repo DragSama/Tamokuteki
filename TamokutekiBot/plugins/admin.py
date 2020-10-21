@@ -1,6 +1,6 @@
 from TamokutekiBot.helpers import command
 
-@Tamokuteki.on(command(pattern = "\.purge"))
+@Tamokuteki.on(command(pattern = "purge"))
 async def purge(event):
     if not event.reply_to_msg_id:
         return
@@ -30,7 +30,7 @@ async def purge(event):
     await Tamokuteki.send_message(event.chat_id, f"Deleted {count} messages.")
 
 
-@Tamokuteki.on(command(pattern=r"\.stats ", outgoing=True))
+@Tamokuteki.on(command(pattern=r"stats ", outgoing=True))
 async def get_stats(event):
     chat = event.text.split(' ', 1)[1]
     try:
@@ -46,7 +46,7 @@ async def get_stats(event):
     await event.reply(msg)
 
 
-@Tamokuteki.on(command(pattern=r"\.(un)?pin", outgoing=True))
+@Tamokuteki.on(command(pattern=r"(un)?pin", outgoing=True))
 async def pin_message(event):
     message_id = event.reply_to_msg_id
     split = event.text.split(" ", 1)
@@ -57,7 +57,7 @@ async def pin_message(event):
     await event.client.pin_message(event.chat_id, message_id, notify = is_loud)
     await event.edit("Done!")
 
-@Tamokuteki.on(command(pattern=r"\.promote", outgoing=True))
+@Tamokuteki.on(command(pattern=r"promote", outgoing=True))
 async def promote(event):
     reply = await event.get_reply_message()
     if not reply:
@@ -83,7 +83,7 @@ async def promote(event):
         await event.edit(str(e))
         return
 
-@Tamokuteki.on(command(pattern=r"\.demote", outgoing=True))
+@Tamokuteki.on(command(pattern=r"demote", outgoing=True))
 async def demote(event):
     reply = await event.get_reply_message()
     if not reply:
@@ -101,7 +101,7 @@ async def demote(event):
         return
     await event.edit("Demoted!")
 
-@Tamokuteki.on(command(pattern=r"\.ban", outgoing=True))
+@Tamokuteki.on(command(pattern=r"ban", outgoing=True))
 async def ban(event):
     reply = await event.get_reply_message()
     if not reply:
@@ -119,7 +119,7 @@ async def ban(event):
         return
     await event.edit("Banned!")
 
-@Tamokuteki.on(command(pattern=r"\.kick", outgoing=True))
+@Tamokuteki.on(command(pattern=r"kick", outgoing=True))
 async def kick(event):
     reply = await event.get_reply_message()
     if not reply:
@@ -137,7 +137,7 @@ async def kick(event):
         return
     await event.edit("Kicked!")
 
-@Tamokuteki.on(command(pattern=r"\.deadaccs", outgoing=True))
+@Tamokuteki.on(command(pattern=r"deadaccs", outgoing=True))
 async def deadaccs_finder(event):
     count = 0
     split = event.text.split(" ", 1)
