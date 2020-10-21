@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 
 def command(pattern, outgoing = True):
-    return command(pattern = re.compile("\." + pattern), outgoing = outgoing)
+    return events.NewMessage(pattern = re.compile("\." + pattern), outgoing = outgoing)
 
 @Tamokuteki.on(command(pattern = "load"))
 async def loading(event):
