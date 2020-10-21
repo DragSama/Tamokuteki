@@ -1,4 +1,5 @@
 from telethon import events
+from TamokutekiBot.core import command
 
 anime_search_query = """
 query ($id: Int, $search: String) {
@@ -46,7 +47,7 @@ def shorten(description):
 
 url = 'https://graphql.anilist.co'
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.anime", outgoing  = True))
+@Tamokuteki.on(command(pattern = "\.anime", outgoing  = True))
 async def anime(event):
     search = event.text.split(' ', 1)
     if len(search) == 1:

@@ -1,8 +1,12 @@
 from telethon import events
 
 from pathlib import Path
+import re
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.load", outgoing  = True))
+def command(pattern, outgoing = True):
+    return command(pattern = re.compile("\." + pattern), outgoing = outgoing)
+
+@Tamokuteki.on(command(pattern = "load"))
 async def loading(event):
     reply = await event.get_reply_message()
     if reply:
@@ -21,13 +25,13 @@ async def loading(event):
     Tamokuteki.load_plugin(path)
     await event.edit("Loaded plugin " + path)
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.unload ", outgoing  = True))
+@Tamokuteki.on(command(pattern = "unload "))
 async def unloading(event):
     mod = event.text.split(" ", 1)[1]
     Tamokuteki.unload_plugin(mod)
     await event.edit("Unloaded plugin " + mod)
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.plugins", outgoing  = True))
+@Tamokuteki.on(command(pattern = "plugins"))
 async def lplugins(event):
     plugins = Tamokuteki.list_plugins()
     msg = "Currently loaded plugins:\n\n"

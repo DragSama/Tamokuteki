@@ -1,6 +1,7 @@
 from telethon import events
+from TamokutekiBot.core import command
 
-@Tamokuteki.on(events.NewMessage(pattern = "\.help", outgoing  = True))
+@Tamokuteki.on(command(pattern = "help"))
 async def help(event) -> None:
     plugins = Tamokuteki.list_plugins()
     split = event.text.split(" ", 1)
