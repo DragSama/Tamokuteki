@@ -1,6 +1,6 @@
 from TamokutekiBot.helpers import command
 
-@Tamokuteki.on(command(pattern = ".config", outgoing  = True))
+@Tamokuteki.on(command(pattern = "config", outgoing  = True))
 async def sup(event):
     await event.edit("Tamokuteki Bot\nRepo: https://github.com/DragSama/Tamokuteki")
 
