@@ -1,5 +1,4 @@
-from telethon import events
-from TamokutekiBot.core import command
+from TamokutekiBot.helpers import command
 
 @Tamokuteki.on(command(pattern = ".config", outgoing  = True))
 async def sup(event):

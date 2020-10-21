@@ -1,10 +1,6 @@
-from telethon import events
-
+from TamokutekiBot.helpers import command
 from pathlib import Path
 import re
-
-def command(pattern, outgoing = True):
-    return events.NewMessage(pattern = re.compile("\." + pattern), outgoing = outgoing)
 
 @Tamokuteki.on(command(pattern = "load"))
 async def loading(event):

@@ -1,6 +1,4 @@
-from telethon import events
-
-from TamokutekiBot.core import command
+from TamokutekiBot.helpers import command
 
 from io import StringIO
 import traceback

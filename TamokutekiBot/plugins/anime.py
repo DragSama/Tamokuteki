@@ -1,5 +1,4 @@
-from telethon import events
-from TamokutekiBot.core import command
+from TamokutekiBot.helpers import command
 
 anime_search_query = """
 query ($id: Int, $search: String) {
