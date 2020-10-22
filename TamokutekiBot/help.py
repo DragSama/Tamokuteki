@@ -22,7 +22,7 @@ async def help(event) -> None:
     commands = mod.__commands__
     if command:
         if command.lower() in commands:
-            await event.edit(f"Help for `{command}` of **{plugin.capitalize()}**:\n\n{commands[command]}")
+            await event.edit(f"Help for `{command}` command of **{plugin.capitalize()}**:\n\n`{commands[command]}`")
             return
     msg = f"Help for **{plugin.capitalize()}**:\n\n"
     for x in commands.keys():

@@ -4,9 +4,10 @@ from io import StringIO
 import traceback
 import sys
 
-#Thanks to stackoverflow for existing https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement
+# Thanks to stackoverflow for existing https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement
 
-@Tamokuteki.on(command(pattern = "eval", outgoing  = True))
+
+@Tamokuteki.on(command(pattern="eval", outgoing=True))
 async def evaluate(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
@@ -18,7 +19,8 @@ async def evaluate(event):
         evaluation = e
     await event.edit(str(evaluation))
 
-@Tamokuteki.on(command(pattern = "exec", outgoing  = True))
+
+@Tamokuteki.on(command(pattern="exec", outgoing=True))
 async def execute(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
@@ -39,11 +41,16 @@ async def execute(event):
     sys.stdout = old_stdout
     final = f"Command:\n`{code}`\n"
     sys.stderr = old_stderr
-    if wizardry: final += "**Output**:\n`" + wizardry
-    elif output: final += "**Output**:\n`" + output
-    elif stderr: final += "**Output**:\n`" + stderr
-    else: final = "`OwO no output"
-    await event.edit(final + '`' )
+    if wizardry:
+        final += "**Output**:\n`" + wizardry
+    elif output:
+        final += "**Output**:\n`" + output
+    elif stderr:
+        final += "**Output**:\n`" + stderr
+    else:
+        final = "`OwO no output"
+    await event.edit(final + '`')
+
 
 async def async_exec(code, event):
     exec(

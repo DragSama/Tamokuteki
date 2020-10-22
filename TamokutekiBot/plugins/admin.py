@@ -1,6 +1,7 @@
 from TamokutekiBot.helpers import command
 
-@Tamokuteki.on(command(pattern = "purge"))
+
+@Tamokuteki.on(command(pattern="purge"))
 async def purge(event):
     if not event.reply_to_msg_id:
         return
@@ -12,11 +13,10 @@ async def purge(event):
     messages = []
     count = 0
     deleted = False
-    async for message in Tamokuteki.iter_messages(event.chat_id, min_id = event.reply_to_msg_id, reverse = True):
+    async for message in Tamokuteki.iter_messages(event.chat_id, min_id=event.reply_to_msg_id, reverse=True):
         if purge_count and count == purge_count:
             break
         count += 1
-        print(count, purge_count)
         if len(messages) == 100:
             await Tamokuteki.delete_messages(event.chat_id, messages)
             messages = []
@@ -25,7 +25,7 @@ async def purge(event):
             messages.append(message)
             deleted = False
     if len(messages) <= 100:
-        if not deleted: # If message were not more than 100 so they never got deleted
+        if not deleted:  # If message were not more than 100 so they never got deleted
             await Tamokuteki.delete_messages(event.chat_id, messages)
     await Tamokuteki.send_message(event.chat_id, f"Deleted {count} messages.")
 
@@ -54,8 +54,9 @@ async def pin_message(event):
         is_loud = True
     else:
         is_loud = False
-    await event.client.pin_message(event.chat_id, message_id, notify = is_loud)
+    await event.client.pin_message(event.chat_id, message_id, notify=is_loud)
     await event.edit("Done!")
+
 
 @Tamokuteki.on(command(pattern=r"promote", outgoing=True))
 async def promote(event):
@@ -71,17 +72,18 @@ async def promote(event):
     split = event.text.split(" ")
     try:
         if len(split) > 1 and split[1] == "anonymous":
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin = True, anonymous = True)
+            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, anonymous=True)
             await event.edit("Promoted as anonymous admin!")
         elif len(split) > 1:
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin = True, title = split[1])
+            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, title=split[1])
             await event.edit(f"Promoted with custom title {split[1]}!")
         else:
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin = True, anonymous = False)
+            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, anonymous=False)
             await event.edit("Promoted!")
     except Exception as e:
         await event.edit(str(e))
         return
+
 
 @Tamokuteki.on(command(pattern=r"demote", outgoing=True))
 async def demote(event):
@@ -95,11 +97,12 @@ async def demote(event):
     else:
         user = reply.sender_id
     try:
-        await Tamokuteki.edit_admin(event.chat_id, user, is_admin = False)
+        await Tamokuteki.edit_admin(event.chat_id, user, is_admin=False)
     except Exception as e:
         await event.edit(str(e))
         return
     await event.edit("Demoted!")
+
 
 @Tamokuteki.on(command(pattern=r"ban", outgoing=True))
 async def ban(event):
@@ -119,6 +122,7 @@ async def ban(event):
         return
     await event.edit("Banned!")
 
+
 @Tamokuteki.on(command(pattern=r"kick", outgoing=True))
 async def kick(event):
     reply = await event.get_reply_message()
@@ -136,6 +140,7 @@ async def kick(event):
         await event.edit(str(e))
         return
     await event.edit("Kicked!")
+
 
 @Tamokuteki.on(command(pattern=r"deadaccs", outgoing=True))
 async def deadaccs_finder(event):
