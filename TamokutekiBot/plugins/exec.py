@@ -1,5 +1,7 @@
 from TamokutekiBot.helpers import command
 
+from telethon import events
+
 from io import StringIO
 import traceback
 import sys
