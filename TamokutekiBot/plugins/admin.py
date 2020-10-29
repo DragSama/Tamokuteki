@@ -151,7 +151,7 @@ async def deadaccs_finder(event):
     else:
         kick = False
     msg = await event.reply("Searching participants...")
-    async for user in Tamokuteki.iter_participants(event.chat_id, aggressive = True):
+    async for user in Tamokuteki.iter_participants(event.chat_id):
         if user.deleted:
             count += 1
             if kick:
