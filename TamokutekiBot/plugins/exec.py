@@ -54,7 +54,7 @@ async def execute(event):
     if len(final) >= 4096:
         with open('output.txt', 'w+') as file:
             file.write(final)
-        await Tamokuteki.send_document(event.chat_id, 'output.txt', caption = code)
+        await Tamokuteki.send_file(event.chat_id, 'output.txt', caption = code)
         return
     await event.edit(final + '`')
 
