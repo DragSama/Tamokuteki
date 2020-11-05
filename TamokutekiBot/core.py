@@ -27,9 +27,12 @@ async def loading(event):
     await event.edit("Loaded plugin " + path)
 
 
-@Tamokuteki.on(command(pattern="unload "))
+@Tamokuteki.on(command(pattern="unload"))
 async def unloading(event):
-    mod = event.text.split(" ", 1)[1]
+    try:
+        mod = event.text.split(" ", 1)[1]
+    except:
+        return
     Tamokuteki.unload_plugin(mod)
     await event.edit("Unloaded plugin " + mod)
 
