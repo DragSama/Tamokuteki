@@ -14,7 +14,7 @@ async def shell(event):
       stderr=asyncio.subprocess.PIPE
   )
   stdout, stderr = await async_process.communicate()
-  msg = f"*Command:*\n`{cmd}`\n"
+  msg = f"**Command:**\n`{cmd}`\n"
   if stderr.decode(): msg += f"**Stderr:**\n`{stderr.decode()}`"
   if stdout.decode(): msg += f"**Stdout:**\n`{stdout.decode()}`"
   if len(msg) > 4096:
