@@ -30,7 +30,7 @@ async def purge(event):
     await Tamokuteki.send_message(event.chat_id, f"Deleted {count} messages.")
 
 
-@Tamokuteki.on(command(pattern=r"stats ", outgoing=True))
+@Tamokuteki.on(command(pattern=r"stats", outgoing=True))
 async def get_stats(event):
     chat = event.text.split(' ', 1)[1]
     try:
