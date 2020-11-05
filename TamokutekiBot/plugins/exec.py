@@ -9,7 +9,7 @@ import sys
 # Thanks to stackoverflow for existing https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement
 
 
-@Tamokuteki.on(events.NewMessage(pattern="eval", outgoing=True))
+@Tamokuteki.on(events.NewMessage(pattern="\.eval", outgoing=True))
 async def evaluate(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
@@ -22,7 +22,7 @@ async def evaluate(event):
     await event.edit(str(evaluation))
 
 
-@Tamokuteki.on(events.NewMessage(pattern="exec", outgoing=True))
+@Tamokuteki.on(events.NewMessage(pattern="\.exec", outgoing=True))
 async def execute(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
@@ -51,6 +51,11 @@ async def execute(event):
         final += "**Output**:\n`" + stderr
     else:
         final = "`OwO no output"
+    if len(final) >= 4096:
+        with open('output.txt', 'w+') as file:
+            file.write(final)
+        await Tamokuteki.send_document(event.chat_id, 'output.txt', caption = code)
+        return
     await event.edit(final + '`')
 
 
