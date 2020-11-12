@@ -21,7 +21,7 @@ from TamokutekiBot.plugins.graphql_queries import anime_search_query, manga_quer
 
 url = 'https://graphql.anilist.co'
 
-tracemoe = tracemoepy.async_trace.Async_Trace(session = TamokutekiBot.aio_session)
+tracemoe = tracemoepy.async_trace.Async_Trace(session = Tamokuteki.aio_session)
 
 @Tamokuteki.on(command(pattern = "anime", outgoing  = True))
 async def anime(event):
