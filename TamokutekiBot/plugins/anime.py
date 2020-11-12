@@ -14,11 +14,14 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import tracemoepy
 
 from TamokutekiBot.helpers import command
 from TamokutekiBot.plugins.graphql_queries import anime_search_query, manga_query
 
 url = 'https://graphql.anilist.co'
+
+tracemoe = tracemoepy.async_trace.Async_Trace(session = TamokutekiBot.aio_session)
 
 @Tamokuteki.on(command(pattern = "anime", outgoing  = True))
 async def anime(event):
@@ -74,6 +77,7 @@ async def anime(event):
         msg += f"[\u200c]({stat_image})"
         await Tamokuteki.send_message(event.chat_id, msg)
 
+
 @Tamokuteki.on(command(pattern = "manga", outgoing  = True))
 async def manga(event):
     search = event.text.split(' ', 1)
@@ -119,7 +123,33 @@ async def manga(event):
         msg += f"[\u200c]({stat_image})"
         await event.edit(msg)
 
+
+@Tamokuteki.on(command(pattern = "reverse", outgoing  = True))
+async def reverse(event):
+    if event.fwd_from:
+        return
+    reply_message = await event.get_reply_message()
+    if not reply_message:
+        await event.edit('Reply to a gif/video/image to reverse search.')
+        return
+    if reply_message.video or reply_message.gif:
+        file = await Tamokuteki.download_media(reply_message, thumb=-1, progress_callback = lambda current, total: event.edit(f'Downloaded {current} out of {total} ' + 'bytes: {:.2%}'.format(current / total)))
+    else:
+        file = await Tamokuteki.download_media(reply_message, progress_callback = lambda current, total: event.edit(f'Downloaded {current} out of {total} ' + 'bytes: {:.2%}'.format(current / total)))
+    search = await tracemoe.search(file, upload_file = True)
+    result = search['docs'][0]
+    msg = f"**Title**: {result['title_english']}"\
+          f"\n**Similarity**: {result['similarity']*100}"\
+          f"\n**Episode**: {result['episode']}"
+    preview = await tracemoe.natural_preview(search)
+    with open('preview.mp4', 'wb') as f:
+     f.write(preview)
+    await event.edit(msg)
+    await Tamokuteki.send_file(event.chat_id, 'preview.mp4', caption = 'Match', force_document=False)
+
+
 __commands__ = {
     "anime": "Search anime on AniList. Format: .anime <anime>",
-    "manga": "Search manga on AniList. Format: .manga <manga>"
+    "manga": "Search manga on AniList. Format: .manga <manga>",
+    "reverse": "Reverse search a image or video to find original anime. Format: .reverse <As reply>"
 }
