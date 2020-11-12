@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import tracemoepy
 
-from TamokutekiBot.helpers import command
+from TamokutekiBot.helpers import command, format_bytes
 from TamokutekiBot.plugins.graphql_queries import anime_search_query, manga_query
 
 url = 'https://graphql.anilist.co'
@@ -133,9 +133,9 @@ async def reverse(event):
         await event.edit('Reply to a gif/video/image to reverse search.')
         return
     if reply_message.video or reply_message.gif:
-        file = await Tamokuteki.download_media(reply_message, thumb=-1, progress_callback = lambda current, total: event.edit(f'Downloaded {current} out of {total} ' + 'bytes: {:.2%}'.format(current / total)))
+        file = await Tamokuteki.download_media(reply_message, thumb=-1, progress_callback = lambda current, total: event.edit(f'Downloaded {format_bytes(current)} out of {format_bytes(total)} ' ))
     else:
-        file = await Tamokuteki.download_media(reply_message, progress_callback = lambda current, total: event.edit(f'Downloaded {current} out of {total} ' + 'bytes: {:.2%}'.format(current / total)))
+        file = await Tamokuteki.download_media(reply_message, progress_callback = lambda current, total: event.edit(f'Downloaded {format_bytes(current)} out of {format_bytes(total)} ' ))
     search = await tracemoe.search(file, upload_file = True)
     result = search['docs'][0]
     msg = f"**Title**: {result['title_english']}"\

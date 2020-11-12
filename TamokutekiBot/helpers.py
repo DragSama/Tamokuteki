@@ -20,3 +20,12 @@ import re
 
 def command(pattern, outgoing = True):
     return events.NewMessage(pattern = re.compile(f"^\.{pattern}( .*)?$"), outgoing = outgoing)
+
+def format_bytes(size):
+    power = 2**10
+    n = 0
+    power_labels = {0 : '', 1: 'kilo', 2: 'mega', 3: 'giga', 4: 'tera'}
+    while size > power:
+        size /= power
+        n += 1
+    return size, power_labels[n]+'bytes'
