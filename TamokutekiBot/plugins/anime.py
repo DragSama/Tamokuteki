@@ -16,50 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from TamokutekiBot.helpers import command
-
-anime_search_query = """
-query ($id: Int, $search: String) {
-  Media(id: $id, type: ANIME, search: $search) {
-    id
-    title {
-      romaji
-      english
-      native
-    }
-    description
-    startDate {
-      year
-    }
-    episodes
-    season
-    type
-    format
-    status
-    duration
-    studios {
-      nodes {
-        name
-      }
-    }
-    trailer {
-      id
-      site
-      thumbnail
-    }
-    averageScore
-    genres
-    bannerImage
-  }
-}
-"""
-def shorten(description):
-    msg = ""
-    if len(description) > 700:
-        description = description[0:500] + '....'
-        msg += f"\n`{description}`"
-    else:
-        msg += f"\n`{description}`"
-    return msg
+from TamokutekiBot.plugins.graphql_queries import anime_search_query, manga_query
 
 url = 'https://graphql.anilist.co'
 
@@ -113,10 +70,56 @@ async def anime(event):
             '<i>', '').replace(
             '</i>', '').replace(
             '<br>', '')
-        msg += shorten(description)
+        msg += description
         msg += f"[\u200c]({stat_image})"
         await Tamokuteki.send_message(event.chat_id, msg)
 
+@Tamokuteki.on(command(pattern = "manga", outgoing  = True))
+async def manga(event):
+    search = event.text.split(' ', 1)
+    if len(search) == 1:
+        update.effective_message.reply_text('Format : .manga < manga name >')
+        return
+    search = search[1]
+    variables = {'search': search}
+    json = requests.post(
+        url, json={
+            'query': manga_query,
+            'variables': variables
+        }).json()
+    msg = ''
+    if 'errors' in json.keys():
+        update.effective_message.reply_text('Manga not found')
+        return
+    json = json['data']
+    if json:
+        json = json['Media']
+        stat_image = f"https://img.anili.st/media/{json['id']}"
+        title, title_native = json['title'].get('romaji',
+                                                False), json['title'].get(
+                                                    'native', False)
+        start_date, status, score = json['startDate'].get(
+            'year', False), json.get('status',
+                                     False), json.get('averageScore', False)
+        if title:
+            msg += f"*{title}*"
+            if title_native:
+                msg += f"(`{title_native}`)"
+        if start_date:
+            msg += f"\n*Start Date* - `{start_date}`"
+        if status:
+            msg += f"\n*Status* - `{status}`"
+        if score:
+            msg += f"\n*Score* - `{score}`"
+        msg += '\n*Genres* - '
+        for x in json.get('genres', []):
+            msg += f"{x}, "
+        msg = msg[:-2]
+        msg += f"_{json.get('description', 'description N/A')}_"
+        msg += f"[\u200c]({stat_image})"
+        await event.edit(msg)
+
 __commands__ = {
-    "anime": "Search anime on AniList. Format: .anime <anime>"
+    "anime": "Search anime on AniList. Format: .anime <anime>",
+    "manga": "Search manga on AniList. Format: .manga <manga>"
 }
