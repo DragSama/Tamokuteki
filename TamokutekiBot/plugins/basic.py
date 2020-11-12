@@ -6,5 +6,5 @@ async def config(event):
     await event.edit("Tamokuteki Bot\nRepo: https://github.com/DragSama/Tamokuteki")
 
 __commands__ = {
-    "config": "Get repo."
+    "config": {"short": "Get repo.", ""}
 }
