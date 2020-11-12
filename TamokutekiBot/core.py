@@ -26,7 +26,7 @@ async def loading(event):
     if reply:
         if reply.media and reply.media.document:
             if reply.media.document.mime_type == "text/x-python":
-                path = await Tamokuteki.download_media(reply)
+                path = await Tamokuteki.download_media(reply, 'plugins/')
             else:
                 await event.edit("Reply to a valid file.")
                 return
