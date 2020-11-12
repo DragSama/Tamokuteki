@@ -1,12 +1,12 @@
 # Tamokuteki
 A multipurpose userbot written using telethon
 
-## Steps to deploy
 ## Setting up on Heroku:
 Here are the ENV variable needed:
 - `API_ID` - Self explanatory, Get this from [my.telegram.org/apps](https://my.telegram.org/apps)
 - `API_HASH` - Self explanatory, Get this from [my.telegram.org/apps](https://my.telegram.org/apps)
 - `STRING_SESSION` - See how to get this [here](https://github.com/DragSama/Tamokuteki#generating-string-session)
+
 ## Setting up locally:
 - `git clone https://github.com/DragSama/Tamokuteki.git`
 - `cd Tamokuteki`
