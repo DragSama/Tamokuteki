@@ -133,7 +133,7 @@ async def ban(event):
     else:
         user = reply.sender_id
     try:
-        await Tamokuteki.kick_participant(event.chat_id, user)
+        await Tamokuteki.edit_permissions(event.chat_id, user, view_messages=False)
     except Exception as e:
         await event.edit(str(e))
         return
