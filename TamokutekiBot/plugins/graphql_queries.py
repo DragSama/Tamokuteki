@@ -55,3 +55,5 @@ query ($id: Int,$search: String) {
       }
     }
 """
+
+__type__ = "IGNORE"

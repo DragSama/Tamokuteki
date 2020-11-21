@@ -43,13 +43,13 @@ class TamokutekiClient(TelegramClient):
 
         path = Path(path)
         stem = path.stem
-        if stem == "__init__":
-            return
         spec = importlib.spec_from_file_location(stem, path)
         module = importlib.module_from_spec(spec)
         module.Tamokuteki = self
         module.session = self.aio_session
         spec.loader.exec_module(module)
+        if hasattr(module, "__type__") and module.__type__ == "IGNORE":
+            return
         self.__plugins__[stem] = module
         logging.info(f"Loaded plugin {stem}")
 
