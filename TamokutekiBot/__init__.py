@@ -30,7 +30,7 @@ if os.environ.get("ENV", False):
     STRING_SESSION = os.environ.get("STRING_SESSION")
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     COFFEEHOUSE_ACCESS_KEY = os.environ.get("COFFEEHOUSE_ACCESS_KEY", None)
-    NO_LOAD = os.environ.get("COFFEEHOUSE_ACCESS_KEY", "").split()
+    NO_LOAD = os.environ.get("NO_LOAD", "").split()
 else:
     import TamokutekiBot.config as Config
     API_ID = Config.API_ID
