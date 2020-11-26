@@ -45,8 +45,12 @@ else:
 
 if MONGO_DB_URI:
     MONGO_CLIENT = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URI)
+    DB = MONGO_CLIENT.Tamokuteki
+    COLLECTION = DB.settings
 else:
     MONGO_CLIENT = None
+    DB = None
+    COLLECTION = None
 
 Tamokuteki = TamokutekiClient(
     StringSession(STRING_SESSION),
