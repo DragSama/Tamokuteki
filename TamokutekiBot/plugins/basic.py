@@ -14,11 +14,12 @@ async def repo(event):
 @Tamokuteki.on(command(pattern="getrep", outgoing=True))
 async def getrep(event):
     split = event.text.split(' ', 2)
+    u = int(split[1]) if split[1].isnumeric() else split[1]
     if len(split) != 3:
         await event.edit('Format: .getrep <username or id> <message to send>')
         return
     try:
-        async with event.client.conversation(int(split[1]), timeout = 900) as conv:
+        async with event.client.conversation(u, timeout = 900) as conv:
             await conv.send_message(split[2])
             start_time = time.time()
             r = await conv.get_response()
@@ -30,7 +31,7 @@ async def getrep(event):
     except ValueError as ve:
         await event.edit(f'Error:\n{ve}')
     except asyncio.exceptions.TimeoutError:
-        await event.edit(f'Timeout, Failed to get reply from {split[1]} within given timeout')
+        await event.edit(f'Timeout, Failed to get reply from {u} within given timeout')
 
 __commands__ = {
     "config": "Get repo.",
