@@ -44,7 +44,10 @@ async def getrep(event):
     try:
         async with event.client.conversation(u, timeout = 900) as conv:
             chat = await conv.get_chat()
-            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n"
+            if replied:
+                msg = f"**Sent**:\n`Replied message`\n**To**:\n`{chat.first_name}`\n"
+            else:
+                msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n"
             await event.edit(msg)
             if replied:
                 await conv.send_message(replied)
@@ -54,8 +57,11 @@ async def getrep(event):
             r = await conv.get_response()
             end_time = time.time()
             await r.forward_to(event.chat_id)
-            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n\n**Got response in {round(end_time - start_time, 2)}s**"
-        await event.edit(msg)
+            if replied:
+                msg = f"**Sent**:\n`Replied message`\n**To**:\n`{chat.first_name}`\n\n**Got response in {round(end_time - start_time, 2)}s**"
+            else:
+                msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n\n**Got response in {round(end_time - start_time, 2)}s**"
+            await event.edit(msg)
     except ValueError as ve:
         await event.edit(f'Error:\n{ve}')
     except asyncio.exceptions.TimeoutError:
