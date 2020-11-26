@@ -26,7 +26,7 @@ async def getrep(event):
             end_time = time.time()
             chat = await conv.get_chat()
             await r.forward_to(event.chat_id)
-            msg = f"**Sent**:\n`{message}`\n**To**: `{chat.first_name}`\nGot response in {round(end_time - start_time, 2)}s"
+            msg = f"**Sent**:\n`{split[2]}`\n**To**: `{chat.first_name}`\nGot response in {round(end_time - start_time, 2)}s"
         await event.edit(msg)
     except ValueError as ve:
         await event.edit(f'Error:\n{ve}')
