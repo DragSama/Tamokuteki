@@ -1,3 +1,5 @@
 telethon
 aiohttp == 3.6.2
 tracemoepy
+pymongo
+dnspython
