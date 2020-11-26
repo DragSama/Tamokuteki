@@ -33,16 +33,23 @@ async def repo(event):
 @Tamokuteki.on(command(pattern="getrep", outgoing=True))
 async def getrep(event):
     split = event.text.split(' ', 2)
-    u = int(split[1]) if split[1].isnumeric() else split[1]
-    if len(split) != 3:
-        await event.edit('Format: .getrep <username or id> <message to send>')
+    replied = await event.get_reply_message()
+    if len(split) != 3 and not replied:
+        await event.edit('Format: .getrep <username or id> <message to send or reply to msg>')
         return
+    if len(split) == 1:
+        await event.edit('Username/ID not provided')
+        return
+    u = int(split[1]) if split[1].isnumeric() else split[1]
     try:
         async with event.client.conversation(u, timeout = 900) as conv:
             chat = await conv.get_chat()
             msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n"
             await event.edit(msg)
-            await conv.send_message(split[2])
+            if replied:
+                await conv.send_message(replied)
+            else:
+                await conv.send_message(split[2])
             start_time = time.time()
             r = await conv.get_response()
             end_time = time.time()
@@ -57,5 +64,5 @@ async def getrep(event):
 __commands__ = {
     "config": "Get repo.",
     "alive": "Check if userbot is running.",
-    "getrep": "Send a message and wait for reply. Format: .getrep <username or id> <message to send>"
+    "getrep": "Send a message and wait for reply. Format: .getrep <username or id> <message to send or reply to msg>"
 }
