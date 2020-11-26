@@ -30,7 +30,7 @@ if os.environ.get("ENV", False):
     API_HASH = os.environ.get("API_HASH")
     STRING_SESSION = os.environ.get("STRING_SESSION")
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
-    COFFEHOUSE_ACCESS_KEY = os.environ.get("COFFEHOUSE_ACCESS_KEY", None)
+    COFFEEHOUSE_ACCESS_KEY = os.environ.get("COFFEEHOUSE_ACCESS_KEY", None)
 else:
     import TamokutekiBot.config as Config
     API_ID = Config.API_ID
@@ -38,9 +38,9 @@ else:
     STRING_SESSION = Config.STRING_SESSION
     try:
       MONGO_DB_URI = Config.MONGO_DB_URI
-      COFFEHOUSE_ACCESS_KEY = Config.COFFEHOUSE_ACCESS_KEY
+      COFFEEHOUSE_ACCESS_KEY = Config.COFFEEHOUSE_ACCESS_KEY
     except:
-      COFFEHOUSE_ACCESS_KEY = None
+      COFFEEHOUSE_ACCESS_KEY = None
       MONGO_DB_URI = None
 
 if MONGO_DB_URI:
