@@ -14,6 +14,7 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from TamokutekiBot import NO_LOAD
 
 from telethon import TelegramClient
 import aiohttp
@@ -36,6 +37,8 @@ class TamokutekiClient(TelegramClient):
         self.load_plugin(core_plugin)
         self.load_plugin(help_plugin)
         for plugin in Path(__file__).parent.glob(f"plugins/*.py"):
+            if Path(plugin).stem in NO_LOAD:
+                continue
             self.load_plugin(plugin)
         logging.info("Loaded all plugins.")
 
