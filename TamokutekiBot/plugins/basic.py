@@ -19,6 +19,7 @@ async def getrep(event):
         await event.edit('Format: .getrep <username or id> <message to send>')
         return
     try:
+        await event.edit('Awaiting response....')
         async with event.client.conversation(u, timeout = 900) as conv:
             await conv.send_message(split[2])
             start_time = time.time()
@@ -26,7 +27,7 @@ async def getrep(event):
             end_time = time.time()
             chat = await conv.get_chat()
             await r.forward_to(event.chat_id)
-            msg = f"**Sent**:\n`{split[2]}`\n**To**: `{chat.first_name}`\nGot response in {round(end_time - start_time, 2)}s"
+            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n**Got response in {round(end_time - start_time, 2)}s**"
         await event.edit(msg)
     except ValueError as ve:
         await event.edit(f'Error:\n{ve}')
