@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from TamokutekiBot.classes import TamokutekiClient
+from .classes import TamokutekiClient
 from telethon.sessions import StringSession
 from motor import motor_asyncio
 
