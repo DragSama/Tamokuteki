@@ -17,9 +17,10 @@
 
 from TamokutekiBot.classes import TamokutekiClient
 from telethon.sessions import StringSession
+from motor import motor_asyncio
 
-import os
 import logging
+import os
 
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.INFO)
@@ -28,11 +29,24 @@ if os.environ.get("ENV", False):
     API_ID = os.environ.get("API_ID")
     API_HASH = os.environ.get("API_HASH")
     STRING_SESSION = os.environ.get("STRING_SESSION")
+    MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
+    COFFEHOUSE_ACCESS_KEY = os.environ.get("COFFEHOUSE_ACCESS_KEY", None)
 else:
     import TamokutekiBot.config as Config
     API_ID = Config.API_ID
     API_HASH = Config.API_HASH
     STRING_SESSION = Config.STRING_SESSION
+    try:
+      MONGO_DB_URI = Config.MONGO_DB_URI
+      COFFEHOUSE_ACCESS_KEY = Config.COFFEHOUSE_ACCESS_KEY
+    except:
+      COFFEHOUSE_ACCESS_KEY = None
+      MONGO_DB_URI = None
+
+if MONGO_DB_URI:
+    MONGO_CLIENT = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URL)
+else:
+    MONGO_CLIENT = None
 
 Tamokuteki = TamokutekiClient(
     StringSession(STRING_SESSION),
