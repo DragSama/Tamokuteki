@@ -1,3 +1,22 @@
+# Copyright (C) 2020 DragSama. All rights reserved. Source code available under the AGPL.
+#
+# This file is part of TamokutekiBot.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Thanks to https://github.com/rsktg or @TheRealPhoenix on telegram for the idea of getrep
+
 from TamokutekiBot.helpers import command
 
 import asyncio
@@ -19,15 +38,16 @@ async def getrep(event):
         await event.edit('Format: .getrep <username or id> <message to send>')
         return
     try:
-        await event.edit('Awaiting response....')
         async with event.client.conversation(u, timeout = 900) as conv:
+            chat = await conv.get_chat()
+            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n"
+            await event.edit(msg)
             await conv.send_message(split[2])
             start_time = time.time()
             r = await conv.get_response()
             end_time = time.time()
-            chat = await conv.get_chat()
             await r.forward_to(event.chat_id)
-            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n**Got response in {round(end_time - start_time, 2)}s**"
+            msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n\n**Got response in {round(end_time - start_time, 2)}s**"
         await event.edit(msg)
     except ValueError as ve:
         await event.edit(f'Error:\n{ve}')
