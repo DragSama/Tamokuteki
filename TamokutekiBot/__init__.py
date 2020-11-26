@@ -44,7 +44,7 @@ else:
       MONGO_DB_URI = None
 
 if MONGO_DB_URI:
-    MONGO_CLIENT = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URL)
+    MONGO_CLIENT = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URI)
 else:
     MONGO_CLIENT = None
 
