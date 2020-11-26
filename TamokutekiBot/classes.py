@@ -30,6 +30,7 @@ class TamokutekiClient(TelegramClient):
         self.__plugins__ = {}
         super().__init__(*args, **kwargs)
         self.aio_session = aiohttp.ClientSession()
+        self.failed_plugins = {}
         core_plugin =  Path(__file__).parent / "core.py"
         help_plugin = Path(__file__).parent / "help.py"
         self.load_plugin(core_plugin)
@@ -43,15 +44,19 @@ class TamokutekiClient(TelegramClient):
 
         path = Path(path)
         stem = path.stem
-        spec = importlib.spec_from_file_location(stem, path)
-        module = importlib.module_from_spec(spec)
-        module.Tamokuteki = self
-        module.session = self.aio_session
-        spec.loader.exec_module(module)
-        if hasattr(module, "__type__") and module.__type__ == "IGNORE":
-            return
-        self.__plugins__[stem] = module
-        logging.info(f"Loaded plugin {stem}")
+        try:
+            spec = importlib.spec_from_file_location(stem, path)
+            module = importlib.module_from_spec(spec)
+            module.Tamokuteki = self
+            module.session = self.aio_session
+            spec.loader.exec_module(module)
+            if hasattr(module, "__type__") and module.__type__ == "IGNORE":
+                return
+            self.__plugins__[stem] = module
+            logging.info(f"Loaded plugin {stem}")
+        except Exception as e:
+            self.failed_plugins[stem] = e
+            logging.error(f'Failed to load plugin{stem}\n{e}')
 
     def unload_plugin(self, plugin: str) -> None:
         """Unload plugin."""
