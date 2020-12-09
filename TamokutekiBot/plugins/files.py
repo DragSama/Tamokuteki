@@ -18,7 +18,7 @@
 from TamokutekiBot.helpers import command, format_bytes
 
 
-def progess_message(current, total, _type):
+def progress_message(current, total, _type):
     total_size, total_type = format_bytes(total)
     curr_size, curr_type = format_bytes(total)
     return f"{_type} {total_size} {total_type} out of {curr_size} {curr_type}"
