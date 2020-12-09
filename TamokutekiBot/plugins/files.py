@@ -29,11 +29,12 @@ async def download_file(event):
         await event.edit("Format: .download <As reply>")
         return
     reply = await event.get_reply_message()
+    message = await event.reply('Downloading...') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
     try:
         path = await Tamokuteki.download_media(
             reply,
             "Downloads/",
-            progress_callback=lambda current, total: event.edit(
+            progress_callback=lambda current, total: message.edit(
                 progress_message(current, total, 'Downloaded')
             ),
         )
@@ -50,12 +51,13 @@ async def upload_file(event):
         await event.edit("Format: .upload location")
         return
     location = split[1]
+    message = await event.reply('Downloading...') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
     try:
         await Tamokuteki.send_file(
             entity=event.chat_id,
             file=location,
             force_document=True,
-            progress_callback=lambda current, total: event.edit(
+            progress_callback=lambda current, total: message.edit(
                 progress_message(current, total, 'Uploaded')
             ),
         )
