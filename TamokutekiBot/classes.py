@@ -23,6 +23,7 @@ import logging
 from pathlib import Path
 import importlib.util as importlib
 
+
 class TamokutekiClient(TelegramClient):
     """Custom Telethon client with extra attributes."""
 
@@ -32,7 +33,7 @@ class TamokutekiClient(TelegramClient):
         super().__init__(*args, **kwargs)
         self.aio_session = aiohttp.ClientSession()
         self.failed_plugins = {}
-        core_plugin =  Path(__file__).parent / "core.py"
+        core_plugin = Path(__file__).parent / "core.py"
         help_plugin = Path(__file__).parent / "help.py"
         self.load_plugin(core_plugin)
         self.load_plugin(help_plugin)
@@ -59,7 +60,7 @@ class TamokutekiClient(TelegramClient):
             logging.info(f"Loaded plugin {stem}")
         except Exception as e:
             self.failed_plugins[stem] = e
-            logging.error(f'Failed to load plugin{stem}\n{e}')
+            logging.error(f"Failed to load plugin{stem}\n{e}")
 
     def unload_plugin(self, plugin: str) -> None:
         """Unload plugin."""

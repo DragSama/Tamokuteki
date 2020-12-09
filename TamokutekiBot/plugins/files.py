@@ -17,43 +17,50 @@
 
 from TamokutekiBot.helpers import command, format_bytes
 
+
 @Tamokuteki.on(command(pattern="download"))
 async def download_file(event):
     if not event.is_reply:
-        await event.edit('Format: .download <As reply>')
+        await event.edit("Format: .download <As reply>")
         return
-    reply= await event.get_reply_message()
+    reply = await event.get_reply_message()
     try:
         path = await Tamokuteki.download_media(
             reply,
-            'Downloads/',
-            progress_callback = lambda current, total: event.edit(f'Downloaded {format_bytes(current)} out of {format_bytes(total)} ')
+            "Downloads/",
+            progress_callback=lambda current, total: event.edit(
+                f"Downloaded {format_bytes(current)} out of {format_bytes(total)} "
+            ),
         )
     except Exception as e:
-        await event.edit(f'An error occurred:\n{str(e)}')
+        await event.edit(f"An error occurred:\n{str(e)}")
         return
     await event.edit(f"Successfully downloaded to {path}")
 
+
 @Tamokuteki.on(command(pattern="upload"))
 async def upload_file(event):
-    split = event.text.split(' ', 1)
+    split = event.text.split(" ", 1)
     if len(split) == 1:
-        await event.edit('Format: .upload location')
+        await event.edit("Format: .upload location")
         return
     location = split[1]
     try:
         await Tamokuteki.send_file(
-            entity = event.chat_id,
-            file = location,
-            force_document = True,
-            progress_callback = lambda current, total: event.edit(f'Uploaded {format_bytes(current)} out of {format_bytes(total)} ')
+            entity=event.chat_id,
+            file=location,
+            force_document=True,
+            progress_callback=lambda current, total: event.edit(
+                f"Uploaded {format_bytes(current)} out of {format_bytes(total)} "
+            ),
         )
     except Exception as e:
-        await event.edit(f'An error occurred:\n{str(e)}')
+        await event.edit(f"An error occurred:\n{str(e)}")
         return
     await event.edit("Done!")
 
+
 __commands__ = {
-    'download': 'Download a file. <As reply>',
-    'upload': 'Upload a file to telegram. Format: .upload <file location/url/file id>'
+    "download": "Download a file. <As reply>",
+    "upload": "Upload a file to telegram. Format: .upload <file location/url/file id>",
 }

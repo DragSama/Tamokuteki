@@ -1,4 +1,3 @@
-  
 # Copyright (C) 2020 DragSama. All rights reserved. Source code available under the AGPL.
 #
 # This file is part of TamokutekiBot.
@@ -30,7 +29,7 @@ if COLLECTION:
     lydia = LydiaAI(COFFEEHOUSE_ACCESS_KEY)
 
     async def get_settings():
-        data = await COLLECTION.find_one({'type': 'lydia-settings'})
+        data = await COLLECTION.find_one({"type": "lydia-settings"})
         return data
 
     async def update_settings(new_settings):
@@ -39,7 +38,7 @@ if COLLECTION:
     async def get_data():
         data = await get_settings()
         if not data:
-            data = {'type': 'lydia-settings', 'users': {}}
+            data = {"type": "lydia-settings", "users": {}}
             await COLLECTION.insert_one(data)
         return data
 
@@ -48,54 +47,62 @@ if COLLECTION:
         settings = await get_data()
         reply_msg = await event.get_reply_message()
         if not reply_msg:
-            await event.edit('Reply to a user to enable chatbot for it.')
+            await event.edit("Reply to a user to enable chatbot for it.")
             return
         user_id = reply_msg.sender_id
-        if user_id in settings['users']:
+        if user_id in settings["users"]:
             await event.edit("Chatbot is already enabled for this chat.")
             return
         session = lydia.create_session()
-        settings['users'][str(user_id)] = {'expires_at': session.expires, 'session_id': session.id}
+        settings["users"][str(user_id)] = {
+            "expires_at": session.expires,
+            "session_id": session.id,
+        }
         await update_settings(settings)
-        await event.edit('Enabled!')
+        await event.edit("Enabled!")
 
     @Tamokuteki.on(command(pattern="rmchat", outgoing=True))
     async def rmchat(event):
         settings = await get_data()
         reply_msg = await event.get_reply_message()
         if not reply_msg:
-            await event.edit('Reply to a user to enable chatbot for it.')
+            await event.edit("Reply to a user to enable chatbot for it.")
             return
         user_id = reply_msg.sender_id
-        if user_id not in settings['users']:
+        if user_id not in settings["users"]:
             await event.edit("Chatbot is not enabled for this chat.")
             return
-        del settings['users'][str(user_id)]
+        del settings["users"][str(user_id)]
         await update_settings(settings)
-        await event.edit('Disabled!')
+        await event.edit("Disabled!")
 
     @Tamokuteki.on(command(pattern="listchats", outgoing=True))
     async def listchats(event):
         settings = await get_data()
         msg = "List of chats:\n"
-        for user in settings['users']:
+        for user in settings["users"]:
             msg += f"• {user}\n"
         await event.edit(msg)
 
-    @Tamokuteki.on(
-        events.NewMessage(incoming = True, func = lambda event: event.mentioned)
-    )
+    @Tamokuteki.on(events.NewMessage(incoming=True, func=lambda event: event.mentioned))
     async def process_replies(event):
-        if event.fwd_from or event.media or not (str(event.sender_id) in (await get_data())['users']):
+        if (
+            event.fwd_from
+            or event.media
+            or not (str(event.sender_id) in (await get_data())["users"])
+        ):
             return
-        print('Replying to user: ' + str(event.sender_id))
+        print("Replying to user: " + str(event.sender_id))
         data = await get_data()
-        user = data['users'][str(event.sender_id)]
+        user = data["users"][str(event.sender_id)]
         message = event.text
 
-        if user['expires_at'] < time.time():
+        if user["expires_at"] < time.time():
             session = lydia.create_session()
-            data['users'][str(event.sender_id)] = {'expires_at': session.expires, 'session_id': session.id}
+            data["users"][str(event.sender_id)] = {
+                "expires_at": session.expires,
+                "session_id": session.id,
+            }
             await update_settings(data)
             output = lydia.think_thought(session.id, message)
         else:
@@ -104,10 +111,10 @@ if COLLECTION:
         async with Tamokuteki.action(event.chat_id, "typing"):
             await asyncio.sleep(0.2)
             await event.reply(output)
-    
+
     __commands__ = {
-      "addchat": "Enable chatbot for a user",
-      "rmchat": "Disable chatbot for a user",
-      "listchats": "List all users which you have enabled chatbot for.",
-      "description": "Uses Coffehouse API: https://coffeehouse.intellivoid.net"
+        "addchat": "Enable chatbot for a user",
+        "rmchat": "Disable chatbot for a user",
+        "listchats": "List all users which you have enabled chatbot for.",
+        "description": "Uses Coffehouse API: https://coffeehouse.intellivoid.net",
     }

@@ -22,27 +22,32 @@ from TamokutekiBot.helpers import command
 import asyncio
 import time
 
+
 @Tamokuteki.on(command(pattern="alive", outgoing=True))
 async def alive(event):
     await event.edit("I'm alive!")
+
 
 @Tamokuteki.on(command(pattern="repo", outgoing=True))
 async def repo(event):
     await event.edit("Tamokuteki Bot\nRepo: https://github.com/DragSama/Tamokuteki")
 
+
 @Tamokuteki.on(command(pattern="getrep", outgoing=True))
 async def getrep(event):
-    split = event.text.split(' ', 2)
+    split = event.text.split(" ", 2)
     replied = await event.get_reply_message()
     if len(split) != 3 and not replied:
-        await event.edit('Format: .getrep <username or id> <message to send or reply to msg>')
+        await event.edit(
+            "Format: .getrep <username or id> <message to send or reply to msg>"
+        )
         return
     if len(split) == 1:
-        await event.edit('Username/ID not provided')
+        await event.edit("Username/ID not provided")
         return
     u = int(split[1]) if split[1].isnumeric() else split[1]
     try:
-        async with event.client.conversation(u, timeout = 900) as conv:
+        async with event.client.conversation(u, timeout=900) as conv:
             chat = await conv.get_chat()
             if replied:
                 msg = f"**Sent**:\n`Replied message`\n**To**:\n`{chat.first_name}`\n"
@@ -63,12 +68,13 @@ async def getrep(event):
                 msg = f"**Sent**:\n`{split[2]}`\n**To**:\n`{chat.first_name}`\n\n**Got response in {round(end_time - start_time, 2)}s**"
             await event.edit(msg)
     except ValueError as ve:
-        await event.edit(f'Error:\n{ve}')
+        await event.edit(f"Error:\n{ve}")
     except asyncio.exceptions.TimeoutError:
-        await event.edit(f'Timeout, Failed to get reply from {u} within given timeout')
+        await event.edit(f"Timeout, Failed to get reply from {u} within given timeout")
+
 
 __commands__ = {
     "config": "Get repo.",
     "alive": "Check if userbot is running.",
-    "getrep": "Send a message and wait for reply. Format: .getrep <username or id> <message to send or reply to msg>"
+    "getrep": "Send a message and wait for reply. Format: .getrep <username or id> <message to send or reply to msg>",
 }

@@ -26,7 +26,7 @@ async def loading(event):
     if reply:
         if reply.media and reply.media.document:
             if reply.media.document.mime_type == "text/x-python":
-                path = await Tamokuteki.download_media(reply, 'plugins/')
+                path = await Tamokuteki.download_media(reply, "plugins/")
             else:
                 await event.edit("Reply to a valid file.")
                 return
@@ -62,9 +62,10 @@ async def lplugins(event):
         msg += f"- `{plugin}`\n"
     await event.edit(msg)
 
+
 __commands__ = {
     "load": "Load a plugin. Format: .load <plugin name>",
     "unload": "Unload a plugin. Format: .unload <plugin name>",
     "plugins": "List all loaded plugins.",
-    "description": "[Core plugin]"
+    "description": "[Core plugin]",
 }

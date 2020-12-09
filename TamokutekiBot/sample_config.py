@@ -1,3 +1,3 @@
-API_ID = ''
-API_HASH = ''
-STRING_SESSION = ''
+API_ID = ""
+API_HASH = ""
+STRING_SESSION = ""

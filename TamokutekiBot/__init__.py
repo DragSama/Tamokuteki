@@ -21,8 +21,9 @@ from motor import motor_asyncio
 import logging
 import os
 
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.INFO)
+logging.basicConfig(
+    format="[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s", level=logging.INFO
+)
 
 if os.environ.get("ENV", False):
     API_ID = os.environ.get("API_ID")
@@ -33,16 +34,17 @@ if os.environ.get("ENV", False):
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
 else:
     import TamokutekiBot.config as Config
+
     API_ID = Config.API_ID
     API_HASH = Config.API_HASH
     STRING_SESSION = Config.STRING_SESSION
     NO_LOAD = Config.NO_LOAD
     try:
-      MONGO_DB_URI = Config.MONGO_DB_URI
-      COFFEEHOUSE_ACCESS_KEY = Config.COFFEEHOUSE_ACCESS_KEY
+        MONGO_DB_URI = Config.MONGO_DB_URI
+        COFFEEHOUSE_ACCESS_KEY = Config.COFFEEHOUSE_ACCESS_KEY
     except:
-      COFFEEHOUSE_ACCESS_KEY = None
-      MONGO_DB_URI = None
+        COFFEEHOUSE_ACCESS_KEY = None
+        MONGO_DB_URI = None
 
 if MONGO_DB_URI:
     MONGO_CLIENT = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URI)
@@ -55,8 +57,4 @@ else:
 
 from .classes import TamokutekiClient
 
-Tamokuteki = TamokutekiClient(
-    StringSession(STRING_SESSION),
-    API_ID,
-    API_HASH
-)
+Tamokuteki = TamokutekiClient(StringSession(STRING_SESSION), API_ID, API_HASH)

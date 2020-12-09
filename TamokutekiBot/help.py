@@ -17,6 +17,7 @@
 
 from TamokutekiBot.helpers import command
 
+
 @Tamokuteki.on(command(pattern="help"))
 async def help(event) -> None:
     plugins = Tamokuteki.list_plugins()
@@ -38,7 +39,9 @@ async def help(event) -> None:
     commands = mod.__commands__
     if command:
         if command.lower() in commands:
-            await event.edit(f"Help for `{command}` command of **{plugin.capitalize()}**:\n\n`{commands[command]}`")
+            await event.edit(
+                f"Help for `{command}` command of **{plugin.capitalize()}**:\n\n`{commands[command]}`"
+            )
             return
     msg = f"Help for **{plugin.capitalize()}**:\n\n"
     for x in commands.keys():
@@ -50,7 +53,8 @@ async def help(event) -> None:
         msg += f"\n{description}"
     await event.edit(msg)
 
+
 __commands__ = {
     "help": "Get help for plugin. Format: .help <plugin name>",
-    "description": "[Core plugin]"
+    "description": "[Core plugin]",
 }

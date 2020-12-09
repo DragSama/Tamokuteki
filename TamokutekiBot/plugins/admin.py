@@ -30,7 +30,9 @@ async def purge(event):
     messages = []
     count = 0
     deleted = False
-    async for message in Tamokuteki.iter_messages(event.chat_id, min_id=event.reply_to_msg_id, reverse=True):
+    async for message in Tamokuteki.iter_messages(
+        event.chat_id, min_id=event.reply_to_msg_id, reverse=True
+    ):
         if purge_count and count == purge_count:
             break
         count += 1
@@ -49,14 +51,16 @@ async def purge(event):
 
 @Tamokuteki.on(command(pattern=r"stats", outgoing=True))
 async def get_stats(event):
-    chat = event.text.split(' ', 1)[1]
+    chat = event.text.split(" ", 1)[1]
     try:
         stats = await Tamokuteki.get_stats(chat)
     except:
-        await event.reply('Failed to get stats for the current chat, Make sure you are admin and chat has more than 500 members.')
+        await event.reply(
+            "Failed to get stats for the current chat, Make sure you are admin and chat has more than 500 members."
+        )
         return
-    min_time = stats.period.min_date.strftime('From %d/%m/%Y, %H:%M:%S')
-    max_time = stats.period.max_date.strftime('To %d/%m/%Y, %H:%M:%S')
+    min_time = stats.period.min_date.strftime("From %d/%m/%Y, %H:%M:%S")
+    max_time = stats.period.max_date.strftime("To %d/%m/%Y, %H:%M:%S")
     member_count = int(stats.members.current) - int(stats.members.previous)
     message_count = int(stats.messages.current) - int(stats.messages.previous)
     msg = f"Group stats:\n{min_time} {max_time}\nMembers count increased by {member_count}\nMessage count increased by {message_count}"
@@ -81,7 +85,9 @@ async def promote(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit("Reply to someone with .promote to promote them or .promote <username>")
+            await event.edit(
+                "Reply to someone with .promote to promote them or .promote <username>"
+            )
             return
         user = split[1]
     else:
@@ -89,13 +95,19 @@ async def promote(event):
     split = event.text.split(" ")
     try:
         if len(split) > 1 and split[1] == "anonymous":
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, anonymous=True)
+            await Tamokuteki.edit_admin(
+                event.chat_id, user, is_admin=True, anonymous=True
+            )
             await event.edit("Promoted as anonymous admin!")
         elif len(split) > 1:
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, title=split[1])
+            await Tamokuteki.edit_admin(
+                event.chat_id, user, is_admin=True, title=split[1]
+            )
             await event.edit(f"Promoted with custom title {split[1]}!")
         else:
-            await Tamokuteki.edit_admin(event.chat_id, user, is_admin=True, anonymous=False)
+            await Tamokuteki.edit_admin(
+                event.chat_id, user, is_admin=True, anonymous=False
+            )
             await event.edit("Promoted!")
     except Exception as e:
         await event.edit(str(e))
@@ -108,7 +120,9 @@ async def demote(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit("Reply to someone with .demote to demote them or use .demote <username>")
+            await event.edit(
+                "Reply to someone with .demote to demote them or use .demote <username>"
+            )
             return
         user = split[1]
     else:
@@ -127,7 +141,9 @@ async def ban(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit("Reply to someone with .ban to ban them from chat or use .ban <username>")
+            await event.edit(
+                "Reply to someone with .ban to ban them from chat or use .ban <username>"
+            )
             return
         user = split[1]
     else:
@@ -146,7 +162,9 @@ async def kick(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit("Reply to someone with .kick to remove them from chat or use .kick <username>")
+            await event.edit(
+                "Reply to someone with .kick to remove them from chat or use .kick <username>"
+            )
             return
         user = split[1]
     else:
@@ -175,7 +193,9 @@ async def deadaccs_finder(event):
                 try:
                     await Tamokuteki.kick_participant(event.chat_id, user)
                 except Exception as e:
-                    await event.edit("Failed to kick deleted accounts, Make sure you are admin.")
+                    await event.edit(
+                        "Failed to kick deleted accounts, Make sure you are admin."
+                    )
                     print(e)
                     await msg.delete()
                     return
@@ -184,6 +204,7 @@ async def deadaccs_finder(event):
     else:
         await event.edit(f"Kicked {count} deleted accounts.")
     await msg.delete()
+
 
 __commands__ = {
     "stats": "Get group stats. Format: .stats <chat id or username>",
@@ -194,5 +215,5 @@ __commands__ = {
     "demote": "Demotes a user. Format: .demote <username or reply> // As reply (Optional)",
     "ban": "Bans a user. Format: .ban <username or reply> // As reply (Optional)",
     "kick": "Kick a user. Format: .kick <username or reply> // As reply (Optional)",
-    "deadaccs": "Find deleted accounts. Format: .deadaccs <kick>"
+    "deadaccs": "Find deleted accounts. Format: .deadaccs <kick>",
 }

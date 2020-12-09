@@ -69,21 +69,19 @@ async def execute(event):
     else:
         final = "`OwO no output"
     if len(final) >= 4096:
-        with open('output.txt', 'w+') as file:
+        with open("output.txt", "w+") as file:
             file.write(final)
-        await Tamokuteki.send_file(event.chat_id, 'output.txt', caption = code)
+        await Tamokuteki.send_file(event.chat_id, "output.txt", caption=code)
         return
-    await event.edit(final + '`')
+    await event.edit(final + "`")
 
 
 async def async_exec(code, event):
     exec(
-        f'async def __async_exec(event): ' +
-        ''.join(f'\n {l}' for l in code.split('\n'))
+        f"async def __async_exec(event): "
+        + "".join(f"\n {l}" for l in code.split("\n"))
     )
-    return await locals()['__async_exec'](event)
+    return await locals()["__async_exec"](event)
 
-__commands__ = {
-    "exec": "Execute code.",
-    "eval": "Evaluate code."
-}
+
+__commands__ = {"exec": "Execute code.", "eval": "Evaluate code."}
