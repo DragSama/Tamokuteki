@@ -51,7 +51,7 @@ async def upload_file(event):
         await event.edit("Format: .upload location")
         return
     location = split[1]
-    message = await event.reply('Downloading...') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
+    message = await event.reply('Uploading..') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
     try:
         await Tamokuteki.send_file(
             entity=event.chat_id,
