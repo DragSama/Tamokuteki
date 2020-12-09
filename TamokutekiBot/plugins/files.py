@@ -51,7 +51,7 @@ async def upload_file(event):
             file=location,
             force_document=True,
             progress_callback=lambda current, total: event.edit(
-                f"Uploaded {format_bytes(current)} out of {format_bytes(total)} "
+                f"Uploaded {str(x) + ' ' for x in format_bytes(current)}out of {str(x) + ' ' for x in format_bytes(total)}"
             ),
         )
     except Exception as e:
