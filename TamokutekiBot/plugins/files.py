@@ -18,10 +18,10 @@
 from TamokutekiBot.helpers import command, format_bytes
 
 
-def progress_message(current, total, _type):
+def progress_message(current, total, _type, event):
     total_size, total_type = format_bytes(total)
     curr_size, curr_type = format_bytes(total)
-    return f"{_type} {total_size} {total_type} out of {curr_size} {curr_type}"
+    return f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}"
 
 @Tamokuteki.on(command(pattern="download"))
 async def download_file(event):
