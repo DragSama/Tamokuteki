@@ -18,6 +18,11 @@
 from TamokutekiBot.helpers import command, format_bytes
 
 
+def progess_message(current, total, _type):
+    total_size, total_type = format_bytes(total)
+    curr_size, curr_type = format_bytes(total)
+    return f"{_type} {total_size} {total_type} out of {curr_size} {curr_type}"
+
 @Tamokuteki.on(command(pattern="download"))
 async def download_file(event):
     if not event.is_reply:
@@ -29,7 +34,7 @@ async def download_file(event):
             reply,
             "Downloads/",
             progress_callback=lambda current, total: event.edit(
-                f"Downloaded {format_bytes(current)} out of {format_bytes(total)} "
+                progress_message(current, total, 'Downloaded')
             ),
         )
     except Exception as e:
@@ -51,7 +56,7 @@ async def upload_file(event):
             file=location,
             force_document=True,
             progress_callback=lambda current, total: event.edit(
-                f"Uploaded {str(x) + ' ' for x in format_bytes(current)}out of {str(x) + ' ' for x in format_bytes(total)}"
+                progress_message(current, total, 'Uploaded')
             ),
         )
     except Exception as e:
