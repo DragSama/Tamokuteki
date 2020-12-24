@@ -16,13 +16,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from TamokutekiBot.helpers import command, format_bytes
-
+import time
 import asyncio
 
-async def progress_message(current, total, _type, message) -> None:
-    total_size, total_type = format_bytes(total)
-    curr_size, curr_type = format_bytes(total)
-    await message.edit(f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}")
+async def progress_message(current, total, _type, message, s) -> None:
+    if time.time() - s % 10 == 0:
+        total_size, total_type = format_bytes(total)
+        curr_size, curr_type = format_bytes(total)
+        await message.edit(f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}")
 
 @Tamokuteki.on(command(pattern="download"))
 async def download_file(event) -> None:
@@ -32,11 +33,12 @@ async def download_file(event) -> None:
     reply = await event.get_reply_message()
     message = await event.reply('Downloading...') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
     try:
+        s = time.time()
         path = await Tamokuteki.download_media(
             reply,
             "Downloads/",
             progress_callback=lambda current, total: asyncio.get_event_loop().create_task(
-                progress_message(current, total, 'Downloaded', message)
+                progress_message(current, total, 'Downloaded', message, s)
             )
         )
     except Exception as e:
@@ -54,12 +56,13 @@ async def upload_file(event) -> None:
     location = split[1]
     message = await event.reply('Uploading..') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
     try:
+        s = time.time()
         await Tamokuteki.send_file(
             entity=event.chat_id,
             file=location,
             force_document=True,
             progress_callback=lambda current, total: asyncio.get_event_loop().create_task(
-                progress_message(current, total, 'Uploaded', message)
+                progress_message(current, total, 'Uploaded', message, s)
             )
         )
     except Exception as e:
