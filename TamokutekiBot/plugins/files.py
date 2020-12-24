@@ -17,14 +17,15 @@
 
 from TamokutekiBot.helpers import command, format_bytes
 
+import asyncio
 
-def progress_message(current, total, _type):
+async def progress_message(current, total, _type, message) -> None:
     total_size, total_type = format_bytes(total)
     curr_size, curr_type = format_bytes(total)
-    return f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}"
+    await message.edit(f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}")
 
 @Tamokuteki.on(command(pattern="download"))
-async def download_file(event):
+async def download_file(event) -> None:
     if not event.is_reply:
         await event.edit("Format: .download <As reply>")
         return
@@ -34,9 +35,9 @@ async def download_file(event):
         path = await Tamokuteki.download_media(
             reply,
             "Downloads/",
-            progress_callback=lambda current, total: message.edit(
-                progress_message(current, total, 'Downloaded')
-            ),
+            progress_callback=lambda current, total: asyncio.get_event_loop().create_task(
+                progress_message(current, total, 'Downloaded', message)
+            )
         )
     except Exception as e:
         await event.edit(f"An error occurred:\n{str(e)}")
@@ -45,7 +46,7 @@ async def download_file(event):
 
 
 @Tamokuteki.on(command(pattern="upload"))
-async def upload_file(event):
+async def upload_file(event) -> None:
     split = event.text.split(" ", 1)
     if len(split) == 1:
         await event.edit("Format: .upload location")
@@ -57,9 +58,9 @@ async def upload_file(event):
             entity=event.chat_id,
             file=location,
             force_document=True,
-            progress_callback=lambda current, total: message.edit(
-                progress_message(current, total, 'Uploaded')
-            ),
+            progress_callback=lambda current, total: asyncio.get_event_loop().create_task(
+                progress_message(current, total, 'Uploaded', message)
+            )
         )
     except Exception as e:
         await event.edit(f"An error occurred:\n{str(e)}")
