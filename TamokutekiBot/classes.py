@@ -16,9 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from TamokutekiBot import NO_LOAD, SUDO_USERS
 
-from telethon import TelegramClient
-import aiohttp
+from telethon import TelegramClient, events
+
 import re
+import aiohttp
 import logging
 from pathlib import Path
 import importlib.util as importlib
