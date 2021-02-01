@@ -47,11 +47,11 @@ if COLLECTION:
         settings = await get_data()
         reply_msg = await event.get_reply_message()
         if not reply_msg:
-            await event.edit("Reply to a user to enable chatbot for it.")
+            await event.send("Reply to a user to enable chatbot for it.")
             return
         user_id = reply_msg.sender_id
         if user_id in settings["users"]:
-            await event.edit("Chatbot is already enabled for this chat.")
+            await event.send("Chatbot is already enabled for this chat.")
             return
         session = lydia.create_session()
         settings["users"][str(user_id)] = {
@@ -59,22 +59,22 @@ if COLLECTION:
             "session_id": session.id,
         }
         await update_settings(settings)
-        await event.edit("Enabled!")
+        await event.send("Enabled!")
 
     @Tamokuteki.on(command(pattern="rmchat", outgoing=True))
     async def rmchat(event):
         settings = await get_data()
         reply_msg = await event.get_reply_message()
         if not reply_msg:
-            await event.edit("Reply to a user to enable chatbot for it.")
+            await event.send("Reply to a user to enable chatbot for it.")
             return
         user_id = reply_msg.sender_id
         if user_id not in settings["users"]:
-            await event.edit("Chatbot is not enabled for this chat.")
+            await event.send("Chatbot is not enabled for this chat.")
             return
         del settings["users"][str(user_id)]
         await update_settings(settings)
-        await event.edit("Disabled!")
+        await event.send("Disabled!")
 
     @Tamokuteki.on(command(pattern="listchats", outgoing=True))
     async def listchats(event):
@@ -82,7 +82,7 @@ if COLLECTION:
         msg = "List of chats:\n"
         for user in settings["users"]:
             msg += f"• {user}\n"
-        await event.edit(msg)
+        await event.send(msg)
 
     @Tamokuteki.on(events.NewMessage(incoming=True, func=lambda event: event.mentioned))
     async def process_replies(event):

@@ -28,20 +28,20 @@ async def loading(event):
             if reply.media.document.mime_type == "text/x-python":
                 path = await Tamokuteki.download_media(reply, "plugins/")
             else:
-                await event.edit("Reply to a valid file.")
+                await event.send("Reply to a valid file.")
                 return
     else:
         if len((split := event.text.split(" ", 1))) == 1:
-            await event.edit("Reply to a plugin.")
+            await event.send("Reply to a plugin.")
             return
         path = split[1] + ".py"
         path = Path(__file__).parent / "plugins" / path
     try:
         Tamokuteki.load_plugin(path)
     except Exception as e:
-        await event.edit(str(e))
+        await event.send(str(e))
         return
-    await event.edit("Loaded plugin " + path)
+    await event.send("Loaded plugin " + path)
 
 
 @Tamokuteki.on(command(pattern="unload"))
@@ -51,7 +51,7 @@ async def unloading(event):
     except:
         return
     Tamokuteki.unload_plugin(mod)
-    await event.edit("Unloaded plugin " + mod)
+    await event.send("Unloaded plugin " + mod)
 
 
 @Tamokuteki.on(command(pattern="plugins"))
@@ -60,7 +60,7 @@ async def lplugins(event):
     msg = "Currently loaded plugins:\n\n"
     for plugin in plugins:
         msg += f"- `{plugin}`\n"
-    await event.edit(msg)
+    await event.send(msg)
 
 
 __commands__ = {

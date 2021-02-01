@@ -76,7 +76,7 @@ async def pin_message(event):
     else:
         is_loud = False
     await event.client.pin_message(event.chat_id, message_id, notify=is_loud)
-    await event.edit("Done!")
+    await event.send("Done!")
 
 
 @Tamokuteki.on(command(pattern=r"promote", outgoing=True))
@@ -85,7 +85,7 @@ async def promote(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit(
+            await event.send(
                 "Reply to someone with .promote to promote them or .promote <username>"
             )
             return
@@ -98,19 +98,19 @@ async def promote(event):
             await Tamokuteki.edit_admin(
                 event.chat_id, user, is_admin=True, anonymous=True
             )
-            await event.edit("Promoted as anonymous admin!")
+            await event.send("Promoted as anonymous admin!")
         elif len(split) > 1:
             await Tamokuteki.edit_admin(
                 event.chat_id, user, is_admin=True, title=split[1]
             )
-            await event.edit(f"Promoted with custom title {split[1]}!")
+            await event.send(f"Promoted with custom title {split[1]}!")
         else:
             await Tamokuteki.edit_admin(
                 event.chat_id, user, is_admin=True, anonymous=False
             )
-            await event.edit("Promoted!")
+            await event.send("Promoted!")
     except Exception as e:
-        await event.edit(str(e))
+        await event.send(str(e))
         return
 
 
@@ -120,7 +120,7 @@ async def demote(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit(
+            await event.send(
                 "Reply to someone with .demote to demote them or use .demote <username>"
             )
             return
@@ -130,9 +130,9 @@ async def demote(event):
     try:
         await Tamokuteki.edit_admin(event.chat_id, user, is_admin=False)
     except Exception as e:
-        await event.edit(str(e))
+        await event.send(str(e))
         return
-    await event.edit("Demoted!")
+    await event.send("Demoted!")
 
 
 @Tamokuteki.on(command(pattern=r"ban", outgoing=True))
@@ -141,7 +141,7 @@ async def ban(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit(
+            await event.send(
                 "Reply to someone with .ban to ban them from chat or use .ban <username>"
             )
             return
@@ -151,9 +151,9 @@ async def ban(event):
     try:
         await Tamokuteki.edit_permissions(event.chat_id, user, view_messages=False)
     except Exception as e:
-        await event.edit(str(e))
+        await event.send(str(e))
         return
-    await event.edit("Banned!")
+    await event.send("Banned!")
 
 
 @Tamokuteki.on(command(pattern=r"kick", outgoing=True))
@@ -162,7 +162,7 @@ async def kick(event):
     if not reply:
         split = event.text.split(" ", 1)
         if len(split) == 1:
-            await event.edit(
+            await event.send(
                 "Reply to someone with .kick to remove them from chat or use .kick <username>"
             )
             return
@@ -172,9 +172,9 @@ async def kick(event):
     try:
         await Tamokuteki.kick_participant(event.chat_id, user)
     except Exception as e:
-        await event.edit(str(e))
+        await event.send(str(e))
         return
-    await event.edit("Kicked!")
+    await event.send("Kicked!")
 
 
 @Tamokuteki.on(command(pattern=r"deadaccs", outgoing=True))
@@ -193,16 +193,16 @@ async def deadaccs_finder(event):
                 try:
                     await Tamokuteki.kick_participant(event.chat_id, user)
                 except Exception as e:
-                    await event.edit(
+                    await event.send(
                         "Failed to kick deleted accounts, Make sure you are admin."
                     )
                     print(e)
                     await msg.delete()
                     return
     if not kick:
-        await event.edit(f"Found {count} deleted accounts.")
+        await event.send(f"Found {count} deleted accounts.")
     else:
-        await event.edit(f"Kicked {count} deleted accounts.")
+        await event.send(f"Kicked {count} deleted accounts.")
     await msg.delete()
 
 

@@ -30,16 +30,16 @@ async def help(event) -> None:
     if "/" in plugin:
         plugin, command = plugin.split("/")
     if plugin not in plugins:
-        await event.edit("Plugin is not loaded or doesn't exist.")
+        await event.send("Plugin is not loaded or doesn't exist.")
         return
     mod = Tamokuteki.get_plugin(plugin)
     if not hasattr(mod, "__commands__"):
-        await event.edit("Help is not available for this plugin.")
+        await event.send("Help is not available for this plugin.")
         return
     commands = mod.__commands__
     if command:
         if command.lower() in commands:
-            await event.edit(
+            await event.send(
                 f"Help for `{command}` command of **{plugin.capitalize()}**:\n\n`{commands[command]}`"
             )
             return
@@ -51,7 +51,7 @@ async def help(event) -> None:
     description = commands.get("description", False)
     if description:
         msg += f"\n{description}"
-    await event.edit(msg)
+    await event.send(msg)
 
 
 __commands__ = {

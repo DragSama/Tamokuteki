@@ -28,7 +28,7 @@ async def progress_message(current, total, _type, message, s) -> None:
 @Tamokuteki.on(command(pattern="download"))
 async def download_file(event) -> None:
     if not event.is_reply:
-        await event.edit("Format: .download <As reply>")
+        await event.send("Format: .download <As reply>")
         return
     reply = await event.get_reply_message()
     message = await event.reply('Downloading...') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
@@ -42,16 +42,16 @@ async def download_file(event) -> None:
             )
         )
     except Exception as e:
-        await event.edit(f"An error occurred:\n{str(e)}")
+        await event.send(f"An error occurred:\n{str(e)}")
         return
-    await event.edit(f"Successfully downloaded to {path}")
+    await event.send(f"Successfully downloaded to {path}")
 
 
 @Tamokuteki.on(command(pattern="upload"))
 async def upload_file(event) -> None:
     split = event.text.split(" ", 1)
     if len(split) == 1:
-        await event.edit("Format: .upload location")
+        await event.send("Format: .upload location")
         return
     location = split[1]
     message = await event.reply('Uploading..') # Not editing current message because if you edit current message with same content it will raise error while for this message it won't
@@ -66,9 +66,9 @@ async def upload_file(event) -> None:
             )
         )
     except Exception as e:
-        await event.edit(f"An error occurred:\n{str(e)}")
+        await event.send(f"An error occurred:\n{str(e)}")
         return
-    await event.edit("Done!")
+    await event.send("Done!")
 
 
 __commands__ = {

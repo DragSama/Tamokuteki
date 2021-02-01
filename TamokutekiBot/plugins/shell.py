@@ -49,7 +49,7 @@ async def shell(event):
                 reply_to=event.message.id,
             )
             return
-    await event.edit(msg)
+    await event.send(msg)
 
 
 __commands__ = {"shell": "Run command"}

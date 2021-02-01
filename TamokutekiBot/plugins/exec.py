@@ -30,20 +30,20 @@ import sys
 async def evaluate(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
-        await event.edit("Format: .eval <command>")
+        await event.send("Format: .eval <command>")
         return
     try:
         evaluation = eval(split[1])
     except Exception as e:
         evaluation = e
-    await event.edit(str(evaluation))
+    await event.send(str(evaluation))
 
 
 @Tamokuteki.on(events.NewMessage(pattern="\.exec", outgoing=True))
 async def execute(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
-        await event.edit("Format: .exec <command>")
+        await event.send("Format: .exec <command>")
         return
     stderr, output, wizardry = None, None, None
     code = split[1]
@@ -73,7 +73,7 @@ async def execute(event):
             file.write(final)
         await Tamokuteki.send_file(event.chat_id, "output.txt", caption=code)
         return
-    await event.edit(final + "`")
+    await event.send(final + "`")
 
 
 async def async_exec(code, event):

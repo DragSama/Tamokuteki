@@ -29,7 +29,7 @@ tracemoe = tracemoepy.async_trace.Async_Trace(session=Tamokuteki.aio_session)
 async def anime(event):
     search = event.text.split(" ", 1)
     if len(search) == 1:
-        await event.edit("Format: .anime <anime name>")
+        await event.send("Format: .anime <anime name>")
         return
     else:
         search = search[1]
@@ -40,7 +40,7 @@ async def anime(event):
         )
     ).json()
     if "errors" in json.keys():
-        await event.edit("No result found :(")
+        await event.send("No result found :(")
         return
     json = json["data"].get("Media", None)
     if json:
@@ -121,7 +121,7 @@ async def manga(event):
         msg = msg[:-2]
         msg += f"_{json.get('description', 'description N/A')}_"
         msg += f"[\u200c]({stat_image})"
-        await event.edit(msg)
+        await event.send(msg)
 
 
 @Tamokuteki.on(command(pattern="reverse", outgoing=True))
@@ -130,20 +130,20 @@ async def reverse(event):
         return
     reply_message = await event.get_reply_message()
     if not reply_message:
-        await event.edit("Reply to a gif/video/image to reverse search.")
+        await event.send("Reply to a gif/video/image to reverse search.")
         return
     if reply_message.video or reply_message.gif:
         file = await Tamokuteki.download_media(
             reply_message,
             thumb=-1,
-            progress_callback=lambda current, total: event.edit(
+            progress_callback=lambda current, total: event.send(
                 f"Downloaded {format_bytes(current)} out of {format_bytes(total)} "
             ),
         )
     else:
         file = await Tamokuteki.download_media(
             reply_message,
-            progress_callback=lambda current, total: event.edit(
+            progress_callback=lambda current, total: event.send(
                 f"Downloaded {format_bytes(current)} out of {format_bytes(total)} "
             ),
         )
@@ -157,7 +157,7 @@ async def reverse(event):
     preview = await tracemoe.natural_preview(search)
     with open("preview.mp4", "wb") as f:
         f.write(preview)
-    await event.edit(msg)
+    await event.send(msg)
     await Tamokuteki.send_file(
         event.chat_id, "preview.mp4", caption="Match", force_document=False
     )
