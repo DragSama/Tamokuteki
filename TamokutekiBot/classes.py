@@ -99,7 +99,7 @@ class TamokutekiClient(TelegramClient):
         def _command(func):
             if allow_sudo:
                 return self.add_event_handler(func, events.NewMessage(
-                    pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing, func=check_event
+                    pattern=re.compile(f"^\.{pattern}( .*)?$"), incoming=True, func=check_event
                 ))
             return self.add_event_handler(func,
                 events.NewMessage(pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing
