@@ -27,8 +27,10 @@ import importlib.util as importlib
 def check_event(event):
     if event.sender.is_self:
         event.send = event.edit
-    else:
+    elif event.sender.id in SUDO_USERS:
         event.send = event.reply
+    else:
+        return False
     return True
 
 class TamokutekiClient(TelegramClient):
@@ -97,7 +99,7 @@ class TamokutekiClient(TelegramClient):
         def _command(func):
             if allow_sudo:
                 return self.on(events.NewMessage(
-                    pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing, func=check_event
+                    pattern=re.compile(f"^\.{pattern}( .*)?$"), incoming=True, func=check_event
                 ))
             return self.on(events.NewMessage(
                 pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing
