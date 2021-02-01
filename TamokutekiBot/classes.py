@@ -25,9 +25,9 @@ from pathlib import Path
 import importlib.util as importlib
 
 def check_event(event):
-    if event.sender.is_self:
+    if event.sender_id == event.client._self_id:
         event.send = event.edit
-    elif event.sender.id in SUDO_USERS:
+    elif event.sender_id in SUDO_USERS:
         event.send = event.reply
     else:
         return False
