@@ -20,7 +20,7 @@ from pathlib import Path
 import re
 
 
-@Tamokuteki.on(command(pattern="load"))
+@Tamokuteki.command(pattern="load")
 async def loading(event):
     reply = await event.get_reply_message()
     if reply:
@@ -44,7 +44,7 @@ async def loading(event):
     await event.edit("Loaded plugin " + path)
 
 
-@Tamokuteki.on(command(pattern="unload"))
+@Tamokuteki.command(pattern="unload")
 async def unloading(event):
     try:
         mod = event.text.split(" ", 1)[1]
@@ -54,7 +54,7 @@ async def unloading(event):
     await event.edit("Unloaded plugin " + mod)
 
 
-@Tamokuteki.on(command(pattern="plugins"))
+@Tamokuteki.command(pattern="plugins")
 async def lplugins(event):
     plugins = Tamokuteki.list_plugins()
     msg = "Currently loaded plugins:\n\n"

@@ -18,7 +18,7 @@
 from TamokutekiBot.helpers import command
 
 
-@Tamokuteki.on(command(pattern="help"))
+@Tamokuteki.command(pattern="help")
 async def help(event) -> None:
     plugins = Tamokuteki.list_plugins()
     split = event.text.split(" ", 1)

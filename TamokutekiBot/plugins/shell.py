@@ -20,7 +20,7 @@ import asyncio
 import io
 
 
-@Tamokuteki.on(events.NewMessage(pattern="\.(term|terminal|sh|shell) ", outgoing=True))
+@Tamokuteki.command(pattern="(term|terminal|sh|shell) ", outgoing=True)
 async def shell(event):
     if event.fwd_from:
         return

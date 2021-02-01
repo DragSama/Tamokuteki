@@ -42,7 +42,7 @@ if COLLECTION:
             await COLLECTION.insert_one(data)
         return data
 
-    @Tamokuteki.on(command(pattern="addchat", outgoing=True))
+    @Tamokuteki.command(pattern="addchat", outgoing=True)
     async def addchat(event):
         settings = await get_data()
         reply_msg = await event.get_reply_message()
@@ -61,7 +61,7 @@ if COLLECTION:
         await update_settings(settings)
         await event.edit("Enabled!")
 
-    @Tamokuteki.on(command(pattern="rmchat", outgoing=True))
+    @Tamokuteki.command(pattern="rmchat", outgoing=True)
     async def rmchat(event):
         settings = await get_data()
         reply_msg = await event.get_reply_message()
@@ -76,7 +76,7 @@ if COLLECTION:
         await update_settings(settings)
         await event.edit("Disabled!")
 
-    @Tamokuteki.on(command(pattern="listchats", outgoing=True))
+    @Tamokuteki.command(pattern="listchats", outgoing=True)
     async def listchats(event):
         settings = await get_data()
         msg = "List of chats:\n"

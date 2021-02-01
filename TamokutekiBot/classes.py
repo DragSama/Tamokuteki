@@ -14,15 +14,21 @@
 
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from TamokutekiBot import NO_LOAD
+from TamokutekiBot import NO_LOAD, SUDO_USERS
 
 from telethon import TelegramClient
 import aiohttp
-
+import re
 import logging
 from pathlib import Path
 import importlib.util as importlib
 
+def check_event(event):
+    if event.sender.is_self:
+        event.send = event.edit
+    else:
+        event.send = event.reply
+    return True
 
 class TamokutekiClient(TelegramClient):
     """Custom Telethon client with extra attributes."""
@@ -85,3 +91,14 @@ class TamokutekiClient(TelegramClient):
 
     def get_plugin(self, plugin: str):
         return self.__plugins__.get(plugin, None)
+
+    def command(self, pattern, outgoing=True, allow_sudo=True):
+        def _command(func):
+            if allow_sudo:
+                return self.on(events.NewMessage(
+                    pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing, func=check_event
+                ))
+            return self.on(events.NewMessage(
+                pattern=re.compile(f"^\.{pattern}( .*)?$"), outgoing=outgoing
+            ))
+        return _command

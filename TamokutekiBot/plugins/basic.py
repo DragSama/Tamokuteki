@@ -23,17 +23,17 @@ import asyncio
 import time
 
 
-@Tamokuteki.on(command(pattern="alive", outgoing=True))
+@Tamokuteki.command(pattern="alive", outgoing=True)
 async def alive(event):
     await event.edit("I'm alive!")
 
 
-@Tamokuteki.on(command(pattern="repo", outgoing=True))
+@Tamokuteki.command(pattern="repo", outgoing=True)
 async def repo(event):
     await event.edit("Tamokuteki Bot\nRepo: https://github.com/DragSama/Tamokuteki")
 
 
-@Tamokuteki.on(command(pattern="getrep", outgoing=True))
+@Tamokuteki.command(pattern="getrep", outgoing=True)
 async def getrep(event):
     split = event.text.split(" ", 2)
     replied = await event.get_reply_message()

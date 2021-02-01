@@ -26,7 +26,7 @@ import sys
 # Thanks to stackoverflow for existing https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement
 
 
-@Tamokuteki.on(events.NewMessage(pattern="\.eval", outgoing=True))
+@Tamokuteki.command(pattern="eval", outgoing=True)
 async def evaluate(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:
@@ -39,7 +39,7 @@ async def evaluate(event):
     await event.edit(str(evaluation))
 
 
-@Tamokuteki.on(events.NewMessage(pattern="\.exec", outgoing=True))
+@Tamokuteki.command(pattern="exec", outgoing=True)
 async def execute(event):
     split = event.text.split(" ", 1)
     if len(split) == 1:

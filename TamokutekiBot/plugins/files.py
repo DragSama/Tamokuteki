@@ -25,7 +25,7 @@ async def progress_message(current, total, _type, message, s) -> None:
         curr_size, curr_type = format_bytes(total)
         await message.edit(f"{_type} {round(total_size, 2)} {total_type} out of {round(curr_size, 2)} {curr_type}")
 
-@Tamokuteki.on(command(pattern="download"))
+@Tamokuteki.command(pattern="download")
 async def download_file(event) -> None:
     if not event.is_reply:
         await event.edit("Format: .download <As reply>")
@@ -47,7 +47,7 @@ async def download_file(event) -> None:
     await event.edit(f"Successfully downloaded to {path}")
 
 
-@Tamokuteki.on(command(pattern="upload"))
+@Tamokuteki.command(pattern="upload")
 async def upload_file(event) -> None:
     split = event.text.split(" ", 1)
     if len(split) == 1:

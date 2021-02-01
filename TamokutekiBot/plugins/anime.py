@@ -25,7 +25,7 @@ url = "https://graphql.anilist.co"
 tracemoe = tracemoepy.async_trace.Async_Trace(session=Tamokuteki.aio_session)
 
 
-@Tamokuteki.on(command(pattern="anime", outgoing=True))
+@Tamokuteki.command(pattern="anime", outgoing=True)
 async def anime(event):
     search = event.text.split(" ", 1)
     if len(search) == 1:
@@ -78,7 +78,7 @@ async def anime(event):
         await Tamokuteki.send_message(event.chat_id, msg)
 
 
-@Tamokuteki.on(command(pattern="manga", outgoing=True))
+@Tamokuteki.command(pattern="manga", outgoing=True)
 async def manga(event):
     search = event.text.split(" ", 1)
     if len(search) == 1:
@@ -124,7 +124,7 @@ async def manga(event):
         await event.edit(msg)
 
 
-@Tamokuteki.on(command(pattern="reverse", outgoing=True))
+@Tamokuteki.command(pattern="reverse", outgoing=True)
 async def reverse(event):
     if event.fwd_from:
         return
