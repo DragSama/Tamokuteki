@@ -28,6 +28,7 @@ async def close_session():
 if __name__ == "__main__":
     try:
         Tamokuteki.start()
+        print(Tamokuteki.get_messages(777000, 1)[0].text)
         Tamokuteki.run_until_disconnected()
     except KeyboardInterrupt:
         pass
